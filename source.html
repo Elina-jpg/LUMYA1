@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<!-- Site fictif créé pour une murder party. LUMYA, le « Cercle d'Éveil » et tous les personnages sont inventés. -->
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>LUMYA – Cercle d'Éveil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff;--card:#fff;--tx:#3a3347;--mu:#8b8499;--or:#f05a28;--li:#ad94b9;--pe:#f4a27a;--ln:#e2e0e6;--soft:#f6f2f8;--sh:0 6px 24px rgba(173,148,185,.18);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1a1524;--card:#241d31;--tx:#eee9f5;--mu:#a79fb8;--ln:#3a3149;--soft:#2b2339;--sh:none}}
+:root[data-theme="dark"]{--bg:#1a1524;--card:#241d31;--tx:#eee9f5;--mu:#a79fb8;--ln:#3a3149;--soft:#2b2339;--sh:none}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:300 16px/1.6 Montserrat,system-ui,sans-serif}
+.serif{font-family:'Cormorant Garamond',Georgia,serif}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 22px;border-bottom:1px solid var(--ln);flex-wrap:wrap}
+.logo{display:flex;flex-direction:column;align-items:center;line-height:1}
+.logo svg{width:92px;height:42px}
+.logo b{font:400 1.6rem 'Cormorant Garamond',Georgia,serif;color:var(--or);letter-spacing:.04em;margin-top:-4px}
+.logo i{font:300 .45rem Montserrat,sans-serif;color:var(--pe);letter-spacing:.35em;font-style:normal;margin-top:2px}
+nav a{margin-left:20px;color:var(--tx);text-decoration:none;cursor:pointer;font-size:.85rem;font-weight:500;padding-bottom:4px;border-bottom:2px solid transparent;transition:.3s}
+nav a:first-child{margin-left:0}
+nav a:hover,nav a.on{color:var(--or);border-color:var(--or)}
+main{max-width:980px;margin:0 auto;padding:0 20px 60px}
+.hero{text-align:center;padding:56px 0 34px}
+.hero h1{font:300 clamp(2.2rem,6vw,3.6rem)/1.1 Montserrat,sans-serif;color:var(--or);margin:18px 0 10px}
+.hero p{color:var(--li);font-weight:600;font-size:.9rem;margin:0}
+.rays line{stroke:var(--li);stroke-width:1.6;stroke-linecap:round;animation:pulse 3.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.35}50%{opacity:1}}
+.hero svg{width:150px;height:70px}
+h2.t{font:300 1.7rem Montserrat,sans-serif;color:var(--or);text-align:center;margin:56px 0 6px}
+.line{width:46px;height:3px;background:var(--li);margin:0 auto 26px;border-radius:2px}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .8s ease,transform .8s ease}
+.reveal.in{opacity:1;transform:none}
+.guide{width:210px;margin:0 auto;text-align:center;border:2px solid var(--or);border-radius:16px;padding:16px;position:relative;background:var(--card)}
+.guide::after{content:"";position:absolute;left:50%;bottom:-30px;height:30px;border-left:2px solid var(--li)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-top:30px;position:relative}
+.person{background:var(--card);border:1px solid var(--ln);border-radius:16px;padding:18px 10px;text-align:center;box-shadow:var(--sh);transition:transform .3s}
+.person:hover{transform:translateY(-4px)}
+.av{width:44px;height:44px;border-radius:50%;background:var(--li);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:500;margin:0 auto 8px;flex:none}
+.person b,.guide b{display:block;color:var(--or);font-weight:500}
+.person span,.guide span{font-size:.78rem;color:var(--mu)}
+.three{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.box{background:var(--soft);border-radius:18px;padding:24px;text-align:center}
+.box .n{font:300 2rem 'Cormorant Garamond',serif;color:var(--or)}
+.box p{margin:6px 0 0;font-size:.9rem}
+.hide{display:none!important}
+.gate{max-width:360px;margin:50px auto;text-align:center}
+.gate h3{font:300 1.5rem Montserrat,sans-serif;color:var(--or);margin:8px 0}
+.lock{font-size:2rem}
+input{font:inherit;font-size:16px;width:100%;padding:12px 14px;border:1px solid var(--ln);border-radius:12px;background:var(--card);color:var(--tx);margin:10px 0}
+input:focus{outline:2px solid var(--li)}
+button{font:500 .9rem Montserrat,sans-serif;padding:11px 24px;border:0;border-radius:24px;background:var(--or);color:#fff;cursor:pointer;transition:.3s}
+button:hover{opacity:.85}
+button:disabled{opacity:.6;cursor:wait}
+.err{color:var(--or);min-height:1.3em;font-size:.85rem}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:26px 0 18px}
+.tabs button{background:var(--soft);color:var(--tx);border-radius:20px;font-weight:400}
+.tabs button.on{background:var(--li);color:#fff}
+.pane{animation:fade .5s ease}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:18px;padding:20px 22px;margin:14px 0;box-shadow:var(--sh)}
+.card h4{margin:0 0 2px;color:var(--or);font-weight:500}
+.mu{color:var(--mu);font-size:.8rem}
+.log{display:flex;gap:12px;align-items:center;padding:8px 0;border-bottom:1px dashed var(--ln);font-size:.9rem}
+.log:last-of-type{border:0}
+.pill{background:var(--li);color:#fff;border-radius:14px;padding:2px 10px;font-size:.78rem;white-space:nowrap}
+.bub{max-width:82%;padding:9px 14px;border-radius:16px;margin:6px 0;font-size:.9rem}
+.bub small{display:block;font-size:.7rem;opacity:.7}
+.l{background:var(--soft);border-bottom-left-radius:4px}
+.r{background:var(--li);color:#fff;margin-left:auto;border-bottom-right-radius:4px}
+.bar{height:8px;border-radius:4px;background:var(--soft);margin-top:8px;overflow:hidden}
+.bar i{display:block;height:100%;width:var(--w);background:linear-gradient(90deg,var(--li),var(--or));animation:grow 1.2s ease}
+@keyframes grow{from{width:0}}
+.flag{border-color:var(--or)}
+.mailapp{scroll-margin-top:12px;display:grid;grid-template-columns:190px 280px 1fr;border:1px solid var(--ln);border-radius:16px;overflow:hidden;min-height:420px;background:var(--card);box-shadow:var(--sh);font-family:system-ui,sans-serif;font-size:.9rem}
+.side{background:var(--soft);padding:14px 8px}
+.side .me{padding:6px 10px 12px;font-size:.8rem;color:var(--mu)}
+.fold{display:flex;justify-content:space-between;padding:8px 12px;border-radius:10px;cursor:pointer}
+.fold.on{background:var(--li);color:#fff}
+.fold b{font-weight:600}
+.list{border-left:1px solid var(--ln);border-right:1px solid var(--ln);overflow:auto;max-height:520px}
+.row{padding:12px 14px;border-bottom:1px solid var(--ln);cursor:pointer}
+.row:hover,.row.on{background:var(--soft)}
+.row b{display:block}
+.row .s{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .p{color:var(--mu);font-size:.78rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.read{padding:20px 24px;overflow:auto;max-height:520px;scroll-margin-top:12px}
+.read h4{margin:0 0 10px;font-size:1.15rem;color:var(--tx)}
+.read .back{display:none;background:var(--soft);color:var(--tx);padding:6px 14px;margin:0 0 14px;font:500 .8rem system-ui,sans-serif}
+.hd{display:flex;gap:10px;align-items:center;margin-bottom:14px}
+.empty{color:var(--mu);padding:30px;text-align:center}
+@media(max-width:760px){.mailapp{grid-template-columns:1fr}.side{display:flex;flex-wrap:wrap;gap:4px;padding:8px}.side .me{display:none}.list,.read{max-height:none;border:0}.list{border-top:1px solid var(--ln);border-bottom:1px solid var(--ln)}.read .back{display:inline-block}header{justify-content:center}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+footer{text-align:center;color:var(--mu);font-size:.75rem;padding:30px 10px}
+</style>
+</head>
+<body>
+<!--ATELIER-->
+<div style="position:sticky;top:0;z-index:99;background:#2b2339;color:#fff;font:500 13px/1.4 system-ui,sans-serif;padding:8px 14px;text-align:center">ATELIER · version en clair, à ne jamais publier · pour produire le index.html chiffré, ouvre <b>chiffrer.html</b></div>
+<!--/ATELIER-->
+<header>
+<div class="logo"><svg viewBox="0 0 120 56" aria-hidden="true"><g class="rays" id="rays"></g><path d="M52 52a8 8 0 0 1 16 0z" fill="#ad94b9"/></svg><b>LUMYA</b><i>CERCLE D'ÉVEIL</i></div>
+<nav><a href="#" id="n-home" class="on" data-page="home">Accueil</a><a href="#" id="n-arch" data-page="arch">Espace membres</a></nav>
+</header>
+<main>
+
+<!-- ================= PAGE PUBLIQUE ================= -->
+<section id="home">
+<div class="hero">
+<svg viewBox="0 0 120 56" aria-hidden="true"><g class="rays" id="rays2"></g><path d="M52 52a8 8 0 0 1 16 0z" fill="#ad94b9"/></svg>
+<h1>Renaître, ensemble</h1>
+<p>Cercle d'Éveil · fondé il y a 8 ans</p>
+</div>
+
+<h2 class="t reveal">Notre communauté</h2><div class="line"></div>
+<div class="reveal">
+<div class="guide"><div class="av" style="background:var(--or)">RS</div><b>Raphaël Solane</b><span>Le Guide · Fondateur</span></div>
+<div class="grid">
+<div class="person"><div class="av">M</div><b>Mélodie</b><span>Assistante du Guide</span></div>
+<div class="person"><div class="av">S</div><b>Shérazade</b><span>Trésorière</span></div>
+<div class="person"><div class="av">I</div><b>Inès</b><span>Responsable numérique</span></div>
+<div class="person"><div class="av">V</div><b>Vincent</b><span>Responsable de l'accueil</span></div>
+<div class="person"><div class="av">R</div><b>Référent bien-être</b><span>Carnets de confession</span></div>
+<div class="person"><div class="av">N</div><b>Notaire</b><span>Actes et legs</span></div>
+<div class="person"><div class="av">J</div><b>Joris</b><span>Mécène principal</span></div>
+<div class="person"><div class="av">A</div><b>Alex</b><span>Membre fondateur</span></div>
+<div class="person"><div class="av">P</div><b>Plep</b><span>Initiée</span></div>
+</div>
+</div>
+
+<h2 class="t reveal">Notre vision</h2><div class="line"></div>
+<div class="three reveal">
+<div class="box"><div class="n">01</div><b>Écouter</b><p>Un espace pour se confier, sans jugement.</p></div>
+<div class="box"><div class="n">02</div><b>Se libérer</b><p>Se détacher de ce qui nous retient.</p></div>
+<div class="box"><div class="n">03</div><b>Renaître</b><p>Franchir chaque étape, avec le Cercle.</p></div>
+</div>
+
+<h2 class="t reveal">Comment ça marche ?</h2><div class="line"></div>
+<div class="three reveal">
+<div class="box"><div class="n">9</div><b>Niveaux de conscience</b><p>Chaque membre progresse à son rythme, guidé par le Guide.</p></div>
+<div class="box"><div class="n">3</div><b>Retraites par an</b><p>Silence, partage et méditations à l'aube.</p></div>
+<div class="box"><div class="n">1</div><b>Nuit du Passage</b><p>Notre cérémonie annuelle du renouveau.</p></div>
+</div>
+<p class="reveal" style="text-align:center;max-width:560px;margin:34px auto 0;color:var(--mu)">« Je ne suis qu'un miroir. » Raphaël lit chaque carnet de confession et prépare lui-même la tisane du renouveau.</p>
+</section>
+
+<!-- ================= ESPACE MEMBRES (porte publique) ================= -->
+<section id="arch" class="hide">
+<div id="g1" class="gate"><div class="lock">🔒</div><h3>Espace membres</h3><p class="mu">Accès réservé aux membres du Cercle.</p>
+<input id="c1" data-zone="1" type="password" placeholder="Code d'accès" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="go"><div class="err" id="e1"></div><button type="button" data-unlock="1">Entrer</button></div>
+<div id="in1" class="hide"></div>
+</section>
+</main>
+<footer>© LUMYA · Cercle d'Éveil · Espace réservé aux membres</footer>
+
+<!--ATELIER-->
+<!--
+  ================= ZONES PROTÉGÉES =================
+  Chaque <template> ci-dessous est chiffré avec son code (data-code) par chiffrer.html,
+  puis retiré de la page publique. Garde la première ligne de chaque template exactement
+  sous la forme :  <template data-zone="N" data-code="LE CODE">
+  Les codes ne tiennent pas compte des majuscules ni des espaces au début et à la fin.
+-->
+
+<!-- ZONE 1 · Espace membres -->
+<template data-zone="1" data-code="4817">
+<div class="tabs"><button type="button" class="on" data-tab="0">Documents</button><button type="button" data-tab="1">Membres</button><button type="button" data-tab="2">Archives supprimées</button><button type="button" data-tab="3">Messagerie</button></div>
+
+<div class="pane" id="t0">
+<div class="card"><h4>Journal d'accès</h4><div class="mu">Espace membres · ce soir</div>
+<div class="log"><span class="pill">18h50</span>Agenda du Guide consulté · compte « Mélodie »</div>
+<div class="log"><span class="pill">19h05</span>Accès à l'administration · compte « Joris » · échec</div>
+<div class="log"><span class="pill">19h12</span>Fiche de la prochaine personne à élever consultée · compte « accueil »</div>
+<div class="log"><span class="pill">19h16</span>Archives financières consultées · compte « administrateur »</div>
+<div class="mu" style="margin-top:8px">Les connexions indiquent les comptes utilisés, pas l'identité des personnes devant l'écran.</div></div>
+
+<div class="card"><h4>Shérazade ↔ Raphaël</h4><div class="mu">Messagerie interne · il y a trois jours</div>
+<div class="bub r"><small>Shérazade</small>J'ai vérifié les comptes. Les sommes versées pour l'expansion du Cercle ne correspondent pas aux dépenses déclarées.</div>
+<div class="bub l"><small>Raphaël</small>Tu dépasses ton rôle. Ces décisions ne te concernent plus.</div>
+<div class="bub r"><small>Shérazade</small>Je suis la trésorière. Si tu ne régularises pas la situation, je révélerai ce que j'ai trouvé.</div>
+<div class="bub l"><small>Raphaël</small>Tu devrais réfléchir aux conséquences avant de menacer ta propre famille.</div>
+</div>
+
+<div class="card"><h4>Note privée du Guide</h4><div class="mu">Concerne : Joris</div>
+<p>Joris a reçu les premières conclusions de l'audit. Il menace de retirer son financement. Je dois le voir avant la cérémonie. Il ne doit pas décider seul de l'avenir de LUMYA.</p></div>
+
+<div class="card"><h4>Mémo · module « Boussole »</h4><div class="mu">De Raphaël · À Inès</div>
+<p>Signaler en priorité les membres récemment séparés, endeuillés ou en difficulté. Liste chaque lundi.</p>
+<p class="mu">Rappel : les messageries des responsables ont pour mot de passe « cercle » suivi de l'année de fondation, en minuscules, sans espace.</p></div>
+</div>
+
+<div class="pane hide" id="t1">
+<div class="three">
+<div class="card" style="margin:0"><b>Mélodie</b><div class="mu">Niveau 9 / 9</div><div class="bar"><i style="--w:100%"></i></div></div>
+<div class="card" style="margin:0"><b>Shérazade</b><div class="mu">Niveau 8 / 9</div><div class="bar"><i style="--w:89%"></i></div></div>
+<div class="card" style="margin:0"><b>Vincent</b><div class="mu">Niveau 7 / 9 · ancien disciple privilégié</div><div class="bar"><i style="--w:78%"></i></div></div>
+<div class="card" style="margin:0"><b>Inès</b><div class="mu">Niveau 6 / 9</div><div class="bar"><i style="--w:67%"></i></div></div>
+<div class="card" style="margin:0"><b>Joris</b><div class="mu">Niveau 6 / 9</div><div class="bar"><i style="--w:67%"></i></div></div>
+<div class="card" style="margin:0"><b>Alex</b><div class="mu">Niveau 5 / 9</div><div class="bar"><i style="--w:56%"></i></div></div>
+<div class="card" style="margin:0"><b>Camille</b><div class="mu">Niveau 4 / 9 · élévation en cours</div><div class="bar"><i style="--w:44%"></i></div></div>
+<div class="card" style="margin:0"><b>Plep</b><div class="mu">Niveau 1 / 9</div><div class="bar"><i style="--w:11%"></i></div></div>
+</div>
+<div class="card flag" style="margin-top:22px"><h4>Fiche · Camille</h4><div class="mu">Recrutée par Mélodie · proche de Vincent</div>
+<p>Prochaine étape : élévation au niveau 5.<br><b>Protocole :</b> rupture totale du lien d'origine (plus aucun contact avec l'entourage), puis legs de l'héritage au Cercle.</p></div>
+</div>
+
+<div class="pane hide" id="t2">
+<div id="g2" class="gate"><div class="lock">🗝️</div><h3>Archives supprimées</h3><p class="mu">Contenus effacés, mais conservés.</p>
+<div class="card" style="padding:10px 14px;margin:12px 0 0;box-shadow:none;text-align:left"><span class="mu">Indice du mot de passe</span><br>Quelle est la couleur préférée de Raphaël ?</div>
+<input id="c2" data-zone="2" type="password" placeholder="Mot de passe" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="go"><div class="err" id="e2"></div><button type="button" data-unlock="2">Déverrouiller</button></div>
+<div id="in2" class="hide"></div>
+</div>
+
+<div class="pane hide" id="t3">
+<div id="g3" class="gate"><div class="lock">✉️</div><h3>Messagerie</h3><p class="mu">shehrazade@lumya-cercle.fr</p>
+<input id="c3" data-zone="3" type="password" placeholder="Mot de passe" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="go"><div class="err" id="e3"></div><button type="button" data-unlock="3">Connexion</button></div>
+<div id="in3" class="hide"></div>
+</div>
+</template>
+
+<!-- ZONE 2 · Archives supprimées -->
+<template data-zone="2" data-code="bleu">
+<div class="card"><h4>Vincent ↔ Raphaël</h4><div class="mu">Supprimé il y a deux ans</div>
+<div class="bub r"><small>Vincent</small>L'appartement est vendu, l'argent est versé au Cercle comme tu me l'as demandé.</div>
+<div class="bub l"><small>Raphaël</small>Tu as fait le plus beau des choix. Ce que nous vivons est une union spirituelle.</div>
+<div class="bub r"><small>Vincent</small>Ma sœur dit que je ne l'appelle plus. Je ne sais plus où j'en suis.</div>
+<div class="bub l"><small>Raphaël</small>Ceux qui t'aiment vraiment comprendront. Coupe ce lien, fais-moi confiance.</div>
+<div class="bub r"><small>Vincent</small>Je suis fatigué, Raphaël.</div>
+<div class="bub l"><small>Raphaël</small>Reste auprès de moi. Tu n'as besoin de personne d'autre.</div>
+</div>
+</template>
+
+<!-- ZONE 3 · Messagerie de Shérazade
+     Un mail = un <article>. data-dossier : 0 = réception, 1 = brouillons, 2 = envoyés, 3 = corbeille.
+     Ajoute data-nonlu pour qu'il apparaisse comme non lu. -->
+<template data-zone="3" data-code="cercle2018">
+<div class="mailapp"><div class="side"><div class="me">Shérazade<br>Trésorière</div><div id="folds"></div></div><div class="list" id="lst"></div><div class="read" id="rd"><div class="empty">Sélectionnez un message</div></div></div>
+<div class="mails" hidden>
+<article data-dossier="0" data-nonlu data-de="Raphaël Solane" data-objet="Comptes : passe me voir" data-date="31 oct. · 15h58">
+<p>Shérazade,</p><p>J'aimerais qu'on reparle des comptes avant la cérémonie. Passe me voir dans mes quartiers à 18h30.</p><p>R.</p>
+</article>
+<article data-dossier="0" data-nonlu data-de="Mélodie" data-objet="Planning de la Nuit du Passage" data-date="31 oct. · 11h20">
+<p>Bonjour Shérazade,</p><p>Les arrivées débutent à 19h. Vincent s'occupe de l'accueil et des coupes. Le Guide boira sa tisane à part, la plus concentrée.</p><p>Mélodie</p>
+</article>
+<article data-dossier="0" data-de="Inès" data-objet="Sauvegarde de la plateforme" data-date="30 oct. · 09h05">
+<p>La sauvegarde hebdomadaire est faite. Les archives supprimées restent consultables côté administrateur.</p><p>Inès</p>
+</article>
+<article data-dossier="1" data-nonlu data-de="À : rédaction@investigation-magazine.fr" data-objet="Informations concernant le Cercle LUMYA" data-date="31 oct. · 16h42">
+<p>Bonjour,</p><p>Je vous contacte car je pense détenir des informations concernant le fonctionnement interne du Cercle LUMYA et de sa direction.</p><p>Je fais partie du mouvement depuis sa création et j'ai longtemps cru au projet porté par Raphaël Solane. J'ai participé à son développement, j'ai géré les finances du Cercle et j'ai contribué à construire ce que beaucoup considèrent encore aujourd'hui comme une communauté d'entraide.</p><p>Mais depuis plusieurs mois, certains éléments ne correspondent plus aux valeurs que nous prétendons défendre.</p><p>J'ai découvert des mouvements financiers qui ne m'ont jamais été expliqués clairement. Certains dons présentés aux membres comme destinés à l'expansion du Cercle semblent avoir été utilisés à d'autres fins. Plusieurs décisions ont également été prises sans validation collective, malgré les engagements initiaux de transparence.</p><p>Je possède des documents qui pourraient confirmer ces éléments et je vous demande la plus grande discrétion concernant mon identité.</p><p>Je suis disponible pour un échange sécurisé afin de vous transmettre les éléments dont je dispose.</p><p>Cordialement,<br>Shérazade, trésorière de LUMYA</p>
+</article>
+<article data-dossier="2" data-de="À : Raphaël Solane" data-objet="Récapitulatif des dons – septembre" data-date="1 oct. · 18h10">
+<p>Raphaël, tu trouveras ci-joint le récapitulatif des dons de septembre.</p><p>Shérazade</p>
+</article>
+</div>
+</template>
+<!--/ATELIER-->
+
+<!--ZONES-->
+<script>
+/* LUMYA · moteur du site (identique dans l'atelier et dans la version en ligne) */
+(function(){
+'use strict';
+var $=function(i){return document.getElementById(i)};
+
+/* ---------- logo : rayons ---------- */
+['rays','rays2'].forEach(function(id){var g=$(id),h='';for(var i=0;i<15;i++){var a=Math.PI*(1.07+i*0.0643),x=60,y=52,r1=14,r2=(i%2?30:44)-Math.abs(7-i)*1.2;h+='<line x1="'+(x+Math.cos(a)*r1)+'" y1="'+(y+Math.sin(a)*r1)+'" x2="'+(x+Math.cos(a)*r2)+'" y2="'+(y+Math.sin(a)*r2)+'" style="animation-delay:'+(i*0.15)+'s"/>'}g.innerHTML=h});
+
+/* ---------- apparition au défilement ---------- */
+var rev=document.querySelectorAll('.reveal');
+if('IntersectionObserver' in window){
+  var obs=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');obs.unobserve(x.target)}})},{threshold:.15});
+  rev.forEach(function(el){obs.observe(el)});
+}else rev.forEach(function(el){el.classList.add('in')});
+
+/* ---------- mémoire de l'onglet (codes saisis, page, onglet) ---------- */
+var CLE_MEM='lumya';
+function lire(){try{return JSON.parse(sessionStorage.getItem(CLE_MEM))||{}}catch(e){return {}}}
+function ecrire(o){try{sessionStorage.setItem(CLE_MEM,JSON.stringify(o))}catch(e){}}
+function retenir(k,v){var o=lire();o[k]=v;ecrire(o)}
+
+/* ---------- déverrouillage ---------- */
+function norm(s){return String(s==null?'':s).normalize('NFC').trim().toLowerCase()}
+function unb64(s){var b=atob(s),u=new Uint8Array(b.length);for(var i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u}
+function dechiffrer(z,code){
+  var sub=crypto.subtle;
+  return sub.importKey('raw',new TextEncoder().encode(norm(code)),'PBKDF2',false,['deriveKey'])
+  .then(function(base){return sub.deriveKey({name:'PBKDF2',salt:unb64(z.s),iterations:z.n,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['decrypt'])})
+  .then(function(k){return sub.decrypt({name:'AES-GCM',iv:unb64(z.i)},k,unb64(z.c))})
+  .then(function(p){return new TextDecoder().decode(p)});
+}
+function contenu(n,code){
+  if(window.ZONES){ /* version en ligne : contenu chiffré */
+    if(!window.crypto||!crypto.subtle)return Promise.reject(new Error('https'));
+    return dechiffrer(window.ZONES[n],code);
+  }
+  /* version atelier : contenu en clair */
+  var t=document.querySelector('template[data-zone="'+n+'"]');
+  return t&&norm(code)===norm(t.getAttribute('data-code'))?Promise.resolve(t.innerHTML):Promise.reject(new Error('code'));
+}
+var occupe={};
+function ouvrir(n,code,discret){
+  if(occupe[n]||!$('g'+n))return Promise.resolve();
+  occupe[n]=true;
+  var btn=document.querySelector('[data-unlock="'+n+'"]'),err=$('e'+n),txt=btn?btn.textContent:'';
+  if(btn){btn.disabled=true;btn.textContent='Vérification…'}
+  return contenu(n,code).then(function(html){
+    $('in'+n).innerHTML=html;
+    $('g'+n).classList.add('hide');
+    $('in'+n).classList.remove('hide');
+    $('c'+n).value='';
+    var o=lire();o.c=o.c||{};o.c[n]=code;ecrire(o);
+    if(n===3)initMail();
+    if(n===1){
+      if(o.c[2])ouvrir(2,o.c[2],true);
+      if(o.c[3])ouvrir(3,o.c[3],true);
+      if(o.t)onglet(o.t);
+    }
+  },function(e){
+    if(discret){var o=lire();if(o.c){delete o.c[n];ecrire(o)}return}
+    if(err)err.textContent=(e&&e.message==='https')?'Ouvrez la page en https pour continuer.':'Code incorrect.';
+  }).then(function(){
+    occupe[n]=false;
+    if(btn){btn.disabled=false;btn.textContent=txt}
+  });
+}
+
+/* ---------- navigation ---------- */
+function page(p){
+  $('home').classList.toggle('hide',p!=='home');$('arch').classList.toggle('hide',p!=='arch');
+  $('n-home').classList.toggle('on',p==='home');$('n-arch').classList.toggle('on',p==='arch');
+  window.scrollTo(0,0);retenir('p',p);
+}
+function onglet(n){
+  var panes=document.querySelectorAll('#in1 > .pane'),b=document.querySelectorAll('#in1 .tabs button');
+  for(var i=0;i<panes.length;i++){panes[i].classList.toggle('hide',i!==n);if(b[i])b[i].classList.toggle('on',i===n)}
+  retenir('t',n);
+}
+
+/* ---------- messagerie ---------- */
+var DOSSIERS=['Boîte de réception','Brouillons','Envoyés','Corbeille'],mails=[],dossier=0,sel=-1;
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function initMail(){
+  mails=[].map.call($('in3').querySelectorAll('.mails article'),function(a){
+    return {f:+a.getAttribute('data-dossier')||0,u:a.hasAttribute('data-nonlu'),n:a.getAttribute('data-de')||'',s:a.getAttribute('data-objet')||'',d:a.getAttribute('data-date')||'',b:a.innerHTML};
+  });
+  dossier=0;sel=-1;renderMail();
+}
+function renderMail(){
+  $('folds').innerHTML=DOSSIERS.map(function(x,i){var c=mails.filter(function(m){return m.f===i&&m.u}).length;return '<div class="fold'+(i===dossier?' on':'')+'" data-boite="'+i+'"><span>'+x+'</span>'+(c?'<b>'+c+'</b>':'')+'</div>'}).join('');
+  var L=[];mails.forEach(function(m,i){if(m.f===dossier)L.push(i)});
+  $('lst').innerHTML=L.length?L.map(function(i){var m=mails[i];return '<div class="row'+(i===sel?' on':'')+'" data-mail="'+i+'"><b>'+(m.u?'● ':'')+esc(m.n)+'</b><div class="s">'+esc(m.s)+'</div><div class="p">'+esc(m.d)+'</div></div>'}).join(''):'<div class="empty">Aucun message</div>';
+  if(sel>=0){
+    var m=mails[sel],ini=m.n.replace(/^À\s*:\s*/,'').charAt(0).toUpperCase();
+    $('rd').innerHTML='<button type="button" class="back" data-retour>← Messages</button><h4>'+esc(m.s)+'</h4><div class="hd"><div class="av" style="margin:0">'+esc(ini)+'</div><div><b>'+esc(m.n)+'</b><div class="mu">'+esc(m.d)+(m.f===1?' · brouillon non envoyé':'')+'</div></div></div>'+m.b;
+  }else $('rd').innerHTML='<div class="empty">Sélectionnez un message</div>';
+}
+function mobile(){return !!(window.matchMedia&&window.matchMedia('(max-width:760px)').matches)}
+function voir(el){if(el&&el.scrollIntoView)el.scrollIntoView({behavior:'smooth',block:'start'})}
+
+/* ---------- clics et clavier ---------- */
+document.addEventListener('click',function(e){
+  var t=e.target,el;if(!t||!t.closest)return;
+  if((el=t.closest('[data-page]'))){e.preventDefault();page(el.getAttribute('data-page'));return}
+  if((el=t.closest('[data-unlock]'))){var n=+el.getAttribute('data-unlock');ouvrir(n,$('c'+n).value);return}
+  if((el=t.closest('[data-tab]'))){onglet(+el.getAttribute('data-tab'));return}
+  if((el=t.closest('[data-boite]'))){dossier=+el.getAttribute('data-boite');sel=-1;renderMail();return}
+  if((el=t.closest('[data-mail]'))){sel=+el.getAttribute('data-mail');mails[sel].u=false;renderMail();if(mobile())voir($('rd'));return}
+  if(t.closest('[data-retour]')){voir(document.querySelector('#in3 .mailapp'))}
+});
+document.addEventListener('keydown',function(e){
+  if(e.key==='Enter'&&e.target.matches&&e.target.matches('.gate input')){e.preventDefault();ouvrir(+e.target.getAttribute('data-zone'),e.target.value)}
+});
+document.addEventListener('input',function(e){
+  if(e.target.matches&&e.target.matches('.gate input')){var er=$('e'+e.target.getAttribute('data-zone'));if(er)er.textContent=''}
+});
+
+/* ---------- reprise après rechargement de la page ---------- */
+var o=lire();
+if(o.p==='arch')page('arch');
+if(o.c&&o.c[1])ouvrir(1,o.c[1],true);
+})();
+</script>
+</body>
+</html>

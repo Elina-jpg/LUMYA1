@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Atelier LUMYA · Chiffrement</title>
+<style>
+:root{--bg:#f6f2f8;--card:#fff;--tx:#3a3347;--mu:#8b8499;--or:#f05a28;--li:#ad94b9;--ln:#e2e0e6;--ok:#2e8b57}
+@media(prefers-color-scheme:dark){:root{--bg:#1a1524;--card:#241d31;--tx:#eee9f5;--mu:#a79fb8;--ln:#3a3149;--ok:#5cc98a}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.6 system-ui,-apple-system,Segoe UI,sans-serif}
+main{max-width:720px;margin:0 auto;padding:32px 16px 60px}
+h1{font-weight:400;color:var(--or);margin:0 0 4px;font-size:1.7rem}
+.sub{color:var(--mu);margin:0 0 26px}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:16px;padding:20px 22px;margin:0 0 16px}
+ol{margin:0;padding-left:20px}
+li{margin:4px 0}
+.drop{display:block;border:2px dashed var(--li);border-radius:14px;padding:28px 16px;text-align:center;cursor:pointer;transition:.2s}
+.drop.over,.drop:hover{background:rgba(173,148,185,.12)}
+.drop b{color:var(--or)}
+input[type=file]{display:none}
+button,.dl{display:inline-block;font:600 .95rem system-ui,sans-serif;padding:11px 24px;border:0;border-radius:24px;background:var(--or);color:#fff;cursor:pointer;text-decoration:none;margin-top:14px}
+button:disabled{opacity:.5;cursor:not-allowed}
+.log{font:13px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre-wrap;margin:0}
+.ok{color:var(--ok)}
+.ko{color:var(--or)}
+.mu{color:var(--mu)}
+code{font:13px ui-monospace,Menlo,Consolas,monospace;background:rgba(173,148,185,.18);padding:1px 5px;border-radius:5px}
+</style>
+</head>
+<body>
+<main>
+<h1>Atelier LUMYA · Chiffrement</h1>
+<p class="sub">Transforme ta version en clair (<code>source.html</code>) en <code>index.html</code> publiable, avec les zones protégées chiffrées.</p>
+
+<div class="card">
+<ol>
+<li>Modifie <code>source.html</code> si besoin et teste-le dans ton navigateur.</li>
+<li>Dépose-le ci-dessous puis clique sur « Générer ».</li>
+<li>Télécharge le <code>index.html</code> et remplace celui du dossier <code>site</code> avant de pousser sur GitHub.</li>
+</ol>
+</div>
+
+<div class="card">
+<label class="drop" id="drop" for="fichier"><b>Choisir source.html</b><br><span class="mu" id="nom">ou glisse-le ici</span></label>
+<input type="file" id="fichier" accept=".html,.htm,text/html">
+<button type="button" id="go" disabled>Générer index.html</button>
+</div>
+
+<div class="card" id="res" hidden>
+<pre class="log" id="log"></pre>
+<a class="dl" id="dl" download="index.html" hidden>Télécharger index.html</a>
+</div>
+</main>
+
+<script id="generateur">
+/* ===== Générateur (le même code sert à produire le index.html livré) ===== */
+var ITERATIONS = 150000;
+function normCode(s){return String(s==null?'':s).normalize('NFC').trim().toLowerCase()}
+function b64(u8){var s='';for(var i=0;i<u8.length;i+=0x8000)s+=String.fromCharCode.apply(null,u8.subarray(i,i+0x8000));return btoa(s)}
+function unb64(s){var b=atob(s),u=new Uint8Array(b.length);for(var i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u}
+function decodeEntites(s){return s.replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&')}
+async function cleAES(code, sel, iterations, usages){
+  var base = await crypto.subtle.importKey('raw', new TextEncoder().encode(normCode(code)), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey({name:'PBKDF2', salt:sel, iterations:iterations, hash:'SHA-256'}, base, {name:'AES-GCM', length:256}, false, usages);
+}
+async function chiffrerTexte(texte, code){
+  var sel = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
+  var k = await cleAES(code, sel, ITERATIONS, ['encrypt']);
+  var c = new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM', iv:iv}, k, new TextEncoder().encode(texte)));
+  return {n:ITERATIONS, s:b64(sel), i:b64(iv), c:b64(c)};
+}
+async function dechiffrerTexte(z, code){
+  var k = await cleAES(code, unb64(z.s), z.n, ['decrypt']);
+  return new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM', iv:unb64(z.i)}, k, unb64(z.c)));
+}
+var RE_ZONE = /<template\s+data-zone="(\d+)"\s+data-code="([^"]*)"\s*>([\s\S]*?)<\/template>/g;
+async function genererSite(source){
+  var trouvees = [], m;
+  RE_ZONE.lastIndex = 0;
+  while((m = RE_ZONE.exec(source))) trouvees.push({n:m[1], code:decodeEntites(m[2]), html:m[3]});
+  if(!trouvees.length) throw new Error('Aucune zone <template data-zone="…" data-code="…"> trouvée dans ce fichier.');
+  if(source.indexOf('<!--ZONES-->') < 0) throw new Error('Repère <!--ZONES--> introuvable : il doit rester juste avant le <script> principal.');
+  var vus = {};
+  trouvees.forEach(function(z){
+    if(vus[z.n]) throw new Error('La zone ' + z.n + ' apparaît deux fois.');
+    if(!normCode(z.code)) throw new Error('La zone ' + z.n + ' n\'a pas de code.');
+    vus[z.n] = true;
+  });
+  /* page publique : on retire les zones en clair et le bandeau atelier */
+  var publique = source.replace(RE_ZONE, '').replace(/<!--ATELIER-->[\s\S]*?<!--\/ATELIER-->\s*/g, '');
+  if(/<template[\s>]/i.test(publique)) throw new Error('Un <template> mal formé reste dans la page : vérifie la première ligne de chaque zone.');
+  var alertes = trouvees.filter(function(z){return publique.toLowerCase().indexOf(normCode(z.code)) >= 0}).map(function(z){return z.code});
+  /* chiffrement + vérification par déchiffrement */
+  var zones = {}, infos = [];
+  for(var j = 0; j < trouvees.length; j++){
+    var z = trouvees[j];
+    zones[z.n] = await chiffrerTexte(z.html, z.code);
+    if(await dechiffrerTexte(zones[z.n], z.code) !== z.html) throw new Error('Vérification échouée pour la zone ' + z.n + '.');
+    infos.push({zone:z.n, code:z.code, caracteres:z.html.length});
+  }
+  var html = publique.replace('<!--ZONES-->', '<script>var ZONES=' + JSON.stringify(zones) + ';<\/script>');
+  return {html:html, infos:infos, alertes:alertes};
+}
+</script>
+
+<script>
+/* ===== Interface ===== */
+var fichier = document.getElementById('fichier'), drop = document.getElementById('drop'), go = document.getElementById('go');
+var res = document.getElementById('res'), log = document.getElementById('log'), dl = document.getElementById('dl'), texte = null, nom = '';
+function charger(f){
+  if(!f) return;
+  nom = f.name;
+  var r = new FileReader();
+  r.onload = function(){ texte = r.result; document.getElementById('nom').textContent = nom; go.disabled = false; };
+  r.readAsText(f, 'utf-8');
+}
+fichier.addEventListener('change', function(){ charger(fichier.files[0]); });
+['dragenter','dragover'].forEach(function(t){ drop.addEventListener(t, function(e){ e.preventDefault(); drop.classList.add('over'); }); });
+['dragleave','drop'].forEach(function(t){ drop.addEventListener(t, function(e){ e.preventDefault(); drop.classList.remove('over'); }); });
+drop.addEventListener('drop', function(e){ charger(e.dataTransfer.files[0]); });
+function ligne(t, cls){ var s = document.createElement('span'); if(cls) s.className = cls; s.textContent = t + '\n'; log.appendChild(s); }
+go.addEventListener('click', async function(){
+  res.hidden = false; log.textContent = ''; dl.hidden = true;
+  if(!window.crypto || !crypto.subtle){ ligne('Le chiffrement n\'est pas disponible dans ce navigateur pour un fichier ouvert depuis le disque. Ouvre cette page avec Chrome ou Firefox.', 'ko'); return; }
+  go.disabled = true; ligne('Chiffrement en cours…', 'mu');
+  try{
+    var r = await genererSite(texte);
+    log.textContent = '';
+    ligne('Fichier : ' + nom, 'mu');
+    r.infos.forEach(function(i){ ligne('✓ Zone ' + i.zone + ' chiffrée (code « ' + i.code + ' », ' + i.caracteres + ' caractères)', 'ok'); });
+    ligne('✓ Chaque zone a été redéchiffrée avec son code pour vérification', 'ok');
+    ligne('✓ Contenus en clair et bandeau atelier retirés de la page publique', 'ok');
+    r.alertes.forEach(function(c){ ligne('⚠ Le code « ' + c + ' » apparaît en clair ailleurs dans la page publique. Vérifie que ce n\'est pas un indice involontaire.', 'ko'); });
+    if(dl.href) URL.revokeObjectURL(dl.href);
+    dl.href = URL.createObjectURL(new Blob([r.html], {type:'text/html;charset=utf-8'}));
+    dl.hidden = false;
+  }catch(e){
+    log.textContent = ''; ligne('✗ ' + e.message, 'ko');
+  }finally{ go.disabled = false; }
+});
+</script>
+</body>
+</html>
